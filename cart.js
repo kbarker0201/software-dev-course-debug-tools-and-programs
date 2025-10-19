@@ -16,6 +16,8 @@ function calculateTotal(cartItems) {
       total += cartItems[i].price; // Bug: cartItems[i] is undefined on the last iteration
       // cartItems[i] was undefined on the last iteration because the length will always be one
       // longer than the total indexes as the indexes start at 0, not 1
+      // The console tab in the browser helped me to locate this error, as it pointed out the error
+      // and indicated the location of the error
   }
   return total;
 }
@@ -35,7 +37,8 @@ function generateReceipt(cartItems, total) {
   if (total.isNumber) {
     receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number
     return receipt; // Added if statement to ensure that if total is not a number, it is 
-                    // converted to a number
+                    // converted to a number. Following along in the debugger helped me to see
+                    // what values were being assigned to my variables
   }
   receipt += `Total: $${Number(total).toFixed(2)}`;
   return receipt;
