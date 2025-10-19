@@ -1,19 +1,30 @@
+/*
 const cart = [
   { name: "Laptop", price: 1000 },
   { name: "Phone", price: 500 },
   { name: "Headphones", price: 200 }
 ];
 
+const cart = [];
+*/
+
+const cart = [{name: "Laptop", price: 1000}];
+
 function calculateTotal(cartItems) {
   let total = 0;
-  for (let i = 0; i <= cartItems.length; i++) { // Bug: <= should be <
+  for (let i = 0; i <= (cartItems.length - 1); i++) { // Bug: <= should be <
       total += cartItems[i].price; // Bug: cartItems[i] is undefined on the last iteration
+      // cartItems[i] was undefined on the last iteration because the length will always be one
+      // longer than the total indexes as the indexes start at 0, not 1
   }
   return total;
 }
 
 function applyDiscount(total, discountRate) {
-  return total - total * discountRate; // Bug: Missing validation for discountRate
+  if (discountRate > 0) {
+    return total - total * discountRate; // Bug: Missing validation for discountRate
+  } // Added if statement to validate discountRate
+  return total;
 }
 
 function generateReceipt(cartItems, total) {
@@ -21,7 +32,12 @@ function generateReceipt(cartItems, total) {
   cartItems.forEach(item => {
       receipt += `${item.name}: $${item.price}\n`;
   });
-  receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number
+  if (total.isNumber) {
+    receipt += `Total: $${total.toFixed(2)}`; // Bug: total may not be a number
+    return receipt; // Added if statement to ensure that if total is not a number, it is 
+                    // converted to a number
+  }
+  receipt += `Total: $${Number(total).toFixed(2)}`;
   return receipt;
 }
 
